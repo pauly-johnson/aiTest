@@ -1,10 +1,17 @@
-const express = require('express');
-const axios = require('axios');
+import express from 'express';
+import axios from 'axios';
+import dotenv from 'dotenv';
+import OpenAI from "openai";
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+dotenv.config();
+
+const apiKey = process.env.API_KEY;
 
 // Route to handle ChatGPT-4 API requests
 app.post('/api/chat', async (req, res) => {
@@ -15,12 +22,23 @@ app.post('/api/chat', async (req, res) => {
     }
 
     try {
-        // Replace with the actual free ChatGPT-4 API URL
-        const response = await axios.post('https://api.github.com/free-chatgpt4', {
-            prompt
+        const client = new OpenAI({
+            baseURL: "https://models.inference.ai.azure.com",
+            apiKey: apiKey
         });
 
-        res.json(response.data);
+        const response = await client.chat.completions.create({
+            messages: [
+                { role: "system", content: "" },
+                { role: "user", content: prompt }
+            ],
+            model: "gpt-4o",
+            temperature: 1,
+            max_tokens: 4096,
+            top_p: 1
+        });
+
+        res.json({ response: response.choices[0].message.content });
     } catch (error) {
         console.error('Error communicating with ChatGPT-4 API:', error);
         res.status(500).json({ error: 'Failed to fetch response from ChatGPT-4 API' });
