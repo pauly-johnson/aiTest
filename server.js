@@ -2,12 +2,16 @@ import express from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import OpenAI from "openai";
+import cors from 'cors';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Enable CORS
+app.use(cors());
 
 dotenv.config();
 
