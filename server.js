@@ -1,5 +1,5 @@
 import express from 'express';
-import axios from 'axios';
+// import axios from 'axios';
 import dotenv from 'dotenv';
 import OpenAI from "openai";
 import cors from 'cors';
@@ -33,7 +33,7 @@ app.post('/api/chat', async (req, res) => {
 
         const response = await client.chat.completions.create({
             messages: [
-                { role: "system", content: "" },
+                { role: "system", content: "you are to assist with customer service, I am seeling T.V's, the cheapest is $100" },
                 { role: "user", content: prompt }
             ],
             model: "gpt-4o",
