@@ -33,7 +33,7 @@ app.post('/api/chat', async (req, res) => {
 
         const response = await client.chat.completions.create({
             messages: [
-                { role: "system", content: "you are to assist with customer service, I am seeling T.V's, the cheapest is $100" },
+                { role: "system", content: "" },
                 { role: "user", content: prompt }
             ],
             model: "gpt-4o",
